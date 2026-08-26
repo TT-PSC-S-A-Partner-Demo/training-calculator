@@ -106,15 +106,23 @@ Add a small button that toggles a dark colour theme for the calculator, and
 remember my choice so it stays dark when I refresh the page.
 ```
 
-**Beat 8 — Your turn, your own prompt.**
-No ready prompt here. Pick one improvement *you* want - a feature, a fix, a tidy-up -
-and write the prompt yourself. Then:
-- **Scope it to `index.html`** so it skips the noise files (`CHANGELOG.md`, `NOTES.md`,
-  `docs/`, `data/`). Say what NOT to read.
-- Run your tripwire after.
-- Try to say the same thing in fewer words, run it again, compare `/status`.
-> Say: "The ready prompts were training wheels. Writing your own - scoped, clear about
-> what to skip - is the actual skill. The cheaper one that still passes the tripwire wins."
+**Beat 8 — Optimize a bloated prompt.**
+Here is a deliberately wasteful prompt. **Your task: get the same result for far fewer
+tokens.** Run it as-is first (`/status` = BEFORE), then rewrite it and run yours
+(`/new`, `/status` = AFTER).
+```
+WASTEFUL (run this first, note the tokens):
+Hi! Please take a very thorough look at this entire calculator project - read every
+single file in the folder, the changelog, the notes, the sample data, all of it, plus
+index.html - then give me a complete detailed explanation of how everything works, its
+full history and every design decision and all known issues, and while you're at it add
+a nice dark mode theme with a toggle, and explain in detail everything you changed.
+```
+Rewrite it so it does only what you actually want (the dark-mode toggle), scoped to
+`index.html`, skipping the noise files. Run your tripwire. Compare the two token counts.
+> Say: "Same outcome, a fraction of the cost. It read the changelog and sample data for
+> nothing. Scoping and saying what to skip is the whole skill - the cheaper one that
+> still passes the tripwire wins."
 
 **Wrap — count the cost.**
 ```
