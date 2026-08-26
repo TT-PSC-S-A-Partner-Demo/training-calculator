@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculator</title>
+<style>
+  :root{ --bg:#f2edf4; --panel:#fff; --line:#e0d5e4; --txt:#1a1a1a; --muted:#6b5c70;
+         --key:#faf7fb; --keytxt:#1a1a1a; --op:#7B2D85; --optxt:#fff; --eq:#d03a8c; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+        background:var(--bg); font-family:'Segoe UI',system-ui,Arial,sans-serif; color:var(--txt); }
+  .calc{ width:300px; background:var(--panel); border:1px solid var(--line); border-radius:16px;
+         padding:18px; box-shadow:0 10px 30px rgba(80,30,90,.12); }
+  .display{ background:#241028; color:#fff; border-radius:10px; padding:18px 16px; text-align:right;
+            font-size:34px; font-weight:600; min-height:64px; word-break:break-all;
+            font-variant-numeric:tabular-nums; margin-bottom:14px; }
+  .keys{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  button{ font:inherit; font-size:20px; padding:16px 0; border:0; border-radius:10px; cursor:pointer;
+          background:var(--key); color:var(--keytxt); transition:filter .12s; }
+  button:hover{ filter:brightness(.95); }
+  button:active{ filter:brightness(.88); }
+  .op{ background:var(--op); color:var(--optxt); }
+  .eq{ background:var(--eq); color:#fff; }
+  .span2{ grid-column:span 2; }
+</style>
+</head>
+<body>
+  <div class="calc">
+    <div class="display" id="display">0</div>
+    <div class="keys">
+      <button data-action="clear" class="op">C</button>
+      <button data-op="/" class="op">&divide;</button>
+      <button data-op="*" class="op">&times;</button>
+      <button data-op="-" class="op">&minus;</button>
+
+      <button data-num="7">7</button>
+      <button data-num="8">8</button>
+      <button data-num="9">9</button>
+      <button data-op="+" class="op">+</button>
+
+      <button data-num="4">4</button>
+      <button data-num="5">5</button>
+      <button data-num="6">6</button>
+      <button data-action="equals" class="eq">=</button>
+
+      <button data-num="1">1</button>
+      <button data-num="2">2</button>
+      <button data-num="3">3</button>
+      <button data-num="0" class="span2">0</button>
+      <button data-num=".">.</button>
+    </div>
+  </div>
+
+<script>
+  // --- calculator state ---
+  let current = "0";   // what is on the display
+  let previous = null; // the stored left-hand operand
+  let operator = null; // "+", "-", "*", "/"
+  let justEvaluated = false;
+
+  const display = document.getElementById("display");
+  function show(){ display.textContent = current; }
+
+  function inputNumber(n){
+    if (justEvaluated){ current = "0"; justEvaluated = false; }
+    if (n === "."){
+      if (!current.includes(".")) current += ".";
+    } else {
+      current = current === "0" ? n : current + n;
+    }
+    show();
+  }
+
+  function chooseOperator(op){
+    if (operator !== null && !justEvaluated) compute();
+    previous = current;
+    operator = op;
+    justEvaluated = true; // next digit starts a fresh number
+  }
+
+  function compute(){
+    if (operator === null || previous === null) return;
+    const a = parseFloat(previous);
+    const b = parseFloat(current);
+    let result;
+    if (operator === "+") result = a + b;
+    else if (operator === "-") result = a - b;
+    else if (operator === "*") result = a * b;
+    else if (operator === "/") result = a / b;   // note: division by zero not handled
+    current = String(result);
+    operator = null;
+    previous = null;
+    justEvaluated = true;
+    show();
+  }
+
+  function clearAll(){
+    current = "0"; previous = null; operator = null; justEvaluated = false;
+    show();
+  }
+
+  document.querySelector(".keys").addEventListener("click", (e)=>{
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.num) inputNumber(b.dataset.num);
+    else if (b.dataset.op) chooseOperator(b.dataset.op);
+    else if (b.dataset.action === "equals") compute();
+    else if (b.dataset.action === "clear") clearAll();
+  });
+
+  show();
+</script>
+</body>
+</html>
