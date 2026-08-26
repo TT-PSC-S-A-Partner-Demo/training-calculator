@@ -106,6 +106,16 @@ Add a small button that toggles a dark colour theme for the calculator, and
 remember my choice so it stays dark when I refresh the page.
 ```
 
+**Beat 8 — Your turn, your own prompt.**
+No ready prompt here. Pick one improvement *you* want - a feature, a fix, a tidy-up -
+and write the prompt yourself. Then:
+- **Scope it to `index.html`** so it skips the noise files (`CHANGELOG.md`, `NOTES.md`,
+  `docs/`, `data/`). Say what NOT to read.
+- Run your tripwire after.
+- Try to say the same thing in fewer words, run it again, compare `/status`.
+> Say: "The ready prompts were training wheels. Writing your own - scoped, clear about
+> what to skip - is the actual skill. The cheaper one that still passes the tripwire wins."
+
 **Wrap — count the cost.**
 ```
 /status
